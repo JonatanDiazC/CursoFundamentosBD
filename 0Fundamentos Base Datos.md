@@ -74,11 +74,12 @@ Las relaciones tienen una propiedad llamada cardinalidad y tiene que ver con nú
 * Cardinalidad: 0 a 1
 * Cardinalidad: 1 a N
 * Cardinalidad: 0 a N
-* 
+  
 ![Cardinalidad](3Cardinalad.png)
 
 
-
+### Múltiples muchos
+![Cardinalidad N a N](4CardinalidadNaN.png "Cardinalidad muchos a muchos")
 
 
 
