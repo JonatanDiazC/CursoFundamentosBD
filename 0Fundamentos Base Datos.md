@@ -78,26 +78,47 @@ Las relaciones tienen una propiedad llamada cardinalidad y tiene que ver con nú
 ![Cardinalidad](3Cardinalad.png)
 
 
-### Múltiples muchos
+### Relaciones Múltiples muchos
 ![Cardinalidad N a N](4CardinalidadNaN.png "Cardinalidad muchos a muchos")
 
 
+### Diagrama ER
+Un diagrama es como un mapa y nos ayuda a entender cuáles son las entidades con las que vamos a trabajar, cuáles son sus relaciones y qué papel van a jugar en las aplicaciones de la base de datos.
+
+![Diagrama Entidad Relación](5Diagrama.png "Cómo se relaciona el blog de platzi")
+
+### Diagrama Físico: tipos de datos y constraints
+Tipos de dato:
+
+* Texto: CHAR(n), VARCHAR(n), TEXT
+* Números: INTEGER, BIGINT, SMALLINT, DECIMAL(n,s), NUMERIC(n,s)
+* Fecha/hora: DATE, TIME, DATETIME, TIMESTAMP
+* Lógicos: BOOLEAN
+
+Constraints (Restricciones)
+
+* NOT NULL: Se asegura que la columna no tenga valores nulos
+* UNIQUE: Se asegura que cada valor en la columna no se repita
+* PRIMARY KEY: Es una combinación de NOT NULL y UNIQUE
+* FOREIGN KEY: Identifica de manera única una tupla en otra tabla
+* CHECK: Se asegura que el valor en la columna cumpla una condición dada
+* DEFAULT: Coloca un valor por defecto cuando no hay un valor especificado
+* INDEX: Se crea por columna para permitir búsquedas más rápidas
 
 
 
+### Diagrama Físico: normalización
+
+>Primera Forma Normal (1NF): Se asegura de que cada celda en una tabla contenga un solo valor, evitando la repetición de grupos de datos y permitiendo la identificación única de cada fila. Para lograr esto, se deben eliminar los valores repetidos en las columnas.
+
+>Segunda Forma Normal (2NF): Se asegura de que todos los campos no clave de una tabla dependan completamente de la clave primaria. Esto significa que no debe haber dependencias parciales de la clave primaria; cada atributo no clave debe depender de toda la clave primaria.
+
+>Tercera Forma Normal (3NF): Se asegura de que no existan dependencias transitivas entre las columnas no clave. En otras palabras, si un campo no clave depende de otro campo no clave, pero también depende de la clave primaria, se deben crear tablas adicionales para evitar esta dependencia transitiva.
+
+![Normalización BD](6normalizacion.png "Referencia de normalización alumnos - cursos")
 
 
-
-
-
-
-
-
-
-
-
-
-
+### 
 
 
 
