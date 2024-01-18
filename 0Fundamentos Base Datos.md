@@ -1,6 +1,6 @@
 
 ## CURSO DE FUNDAMENTOS DE BASES DE DATOS
-###### Fuente curso Plaztzi 2024
+###### Apuntes: Fuente curso Plaztzi 2024
 
 ### 1. BIENVENIDA CONCEPTOS BÁSICOS Y CONTEXTO HISTÓRICO DE LAS BASES DE DATOS
 
@@ -36,7 +36,7 @@ Las bases de datos surgen de la necesidad de conservar la información más all�
 * Ejemplo de entidad en bases de datos
     * En la imagen puedes observar como ejemplo que la enidad Laptops posee diferentes atributos como colo, pantalla, año, modelo, etc.
 
-![Entidad](1Entidad.png)
+![Entidad](BDImagenes/1Entidad.png)
 
 
 * ¿Qué es un atributo?
@@ -61,7 +61,7 @@ Cómo representar las entidades en bases de datos
 
 Existen varios tipos de notaciones para los modelos entidad relacionamiento. Chen es uno de los más utilizados para diagramar lógicamente la base de datos. Aquí te mostramos un ejemplo.
 
-![Chen's notation](2ChensNotation.png)
+![Chen's notation](BDImagenes/2ChensNotation.png)
 
 
 ### Entidades de Platzi Blog
@@ -75,17 +75,17 @@ Las relaciones tienen una propiedad llamada cardinalidad y tiene que ver con nú
 * Cardinalidad: 1 a N
 * Cardinalidad: 0 a N
   
-![Cardinalidad](3Cardinalad.png)
+![Cardinalidad](BDImagenes/3Cardinalad.png)
 
 
 ### Relaciones Múltiples muchos
-![Cardinalidad N a N](4CardinalidadNaN.png "Cardinalidad muchos a muchos")
+![Cardinalidad N a N](BDImagenes/4CardinalidadNaN.png "Cardinalidad muchos a muchos")
 
 
 ### Diagrama ER
 Un diagrama es como un mapa y nos ayuda a entender cuáles son las entidades con las que vamos a trabajar, cuáles son sus relaciones y qué papel van a jugar en las aplicaciones de la base de datos.
 
-![Diagrama Entidad Relación](5Diagrama.png "Cómo se relaciona el blog de platzi")
+![Diagrama Entidad Relación](BDImagenes/5Diagrama.png "Cómo se relaciona el blog de platzi")
 
 ### Diagrama Físico: tipos de datos y constraints
 Tipos de dato:
@@ -115,21 +115,47 @@ Constraints (Restricciones)
 
 >Tercera Forma Normal (3NF): Se asegura de que no existan dependencias transitivas entre las columnas no clave. En otras palabras, si un campo no clave depende de otro campo no clave, pero también depende de la clave primaria, se deben crear tablas adicionales para evitar esta dependencia transitiva.
 
-![Normalización BD](6normalizacion.png "Referencia de normalización alumnos - cursos")
+![Normalización BD](BDImagenes/6normalizacion.png "Referencia de normalización alumnos - cursos")
 
 
-### 
+### Diagrama Físico: normalizando Platziblog
+
+* Diagrama BD Posts
+
+![DIAGRAMA DE RELACIÓN BDS](BDImagenes/7DiagramaPost.png)
+
+```SQL
+* (PK): Primary key
+* (FK): Foreign Key
+* (NN): Not Null
+* (NN - UNIQUE): No valor nulo y unico
+```
 
 
+### Instalación local de un RDBMS (Windows)
 
+Hay dos maneras de acceder a manejadores de bases de datos:
 
+* Instalar en máquina local un administrador de bases relacional.
+* Tener ambientes de desarrollo especiales o servicios cloud.
+En este curso usaremos MySQL porque tiene un impacto histórico siendo muy utilizado y además es software libre y gratuito. La versión 5.6.43 es compatible con la mayoría de aplicaciones y frameworks.
 
+* Root es el usuario principal que tendrá todos los permisos y por lo tanto en ambientes de producción hay que tener mucho cuidado al configurarlo.
 
+[https://www.mysql.com/downloads/]
 
+### ¿Qué es RDB y RDBMS?
 
+RDBMS (Relational DataBase Management System) Sistema Manejador de Bases de datos relacionales.
 
+La diferencia entre ambos es que las BBDD son un conjunto de datos pertenecientes ( o al menos en teoría) a un mismo tipo de contexto, que guarda los datos de forma persistente para un posterior uso, y el Sistema de gestión de BBDD o sistema manejador, es el que nos permite acceder a ella, es un software, herramienta que sirve de conexión entre las BBDD y el usuario (nos presenta una interfaz para poder gestionarla, manejarla).
 
-
+#### RDBMS
+* MySQL
+* PostgreSQL
+* Etc
+  
+Todas toman un lenguaje base, pero cada uno lo apropia, imponiéndole diferentes reglas y características.
 
 
 
