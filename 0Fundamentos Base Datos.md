@@ -142,7 +142,7 @@ En este curso usaremos MySQL porque tiene un impacto histórico siendo muy utili
 
 * Root es el usuario principal que tendrá todos los permisos y por lo tanto en ambientes de producción hay que tener mucho cuidado al configurarlo.
 
-[https://www.mysql.com/downloads/]
+[Link de descarga MYSQL](https://www.mysql.com/downloads/)
 
 ### ¿Qué es RDB y RDBMS?
 
