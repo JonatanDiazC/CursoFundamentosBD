@@ -174,8 +174,7 @@ Ahora existe el NOSQL o Not Only Structured Query Language que significa que no 
 ![SQL - NO SQL](BDImagenes/8SQL-NoSQL.png)
 
 
-### DDL create
-
+### DDL DATA DEFINITION LANGUAGE create
 
 SQL tiene dos grandes sublenguajes:
 
@@ -239,7 +238,7 @@ DESCRIBE people;
 
 ```
 
-### DDL drop
+### DDL drop    
 
 * Está puede ser la sentencia ¡más peligrosa! (????), sobre todo cuando somos principiantes. Básicamente borra o desaparece de nuestra base de datos algún elemento.
 
@@ -272,7 +271,7 @@ DROP COLUMN address;
 
 ```
 
-### DML
+### DML DATA MANIPULATION LANGUAGE
 
 DML trata del contenido de la base de datos. Son las siglas de Data Manipulation Language y sus comandos son:
 
