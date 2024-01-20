@@ -158,6 +158,195 @@ La diferencia entre ambos es que las BBDD son un conjunto de datos perteneciente
 Todas toman un lenguaje base, pero cada uno lo apropia, imponiéndole diferentes reglas y características.
 
 
+### Clientes gráficos
+
+* MySQL Workbench
+
+### Servicios administrados
+Hoy en día muchas empresas ya no tienen instalados en sus servidores los RDBMS sino que los contratan a otras personas. Estos servicios administrados cloud te permiten concentrarte en la base de datos y no en su administración y actualización.
+
+### Historia de SQL
+
+SQL significa Structured Query Language y tiene una estructura clara y fija. Su objetivo es hacer un solo lenguaje para consultar cualquier manejador de bases de datos volviéndose un gran estándar.
+
+Ahora existe el NOSQL o Not Only Structured Query Language que significa que no sólo se utiliza SQLen las bases de datos no relacionales.
+
+![SQL - NO SQL](BDImagenes/8SQL-NoSQL.png)
+
+
+### DDL create
+
+
+SQL tiene dos grandes sublenguajes:
+
+DDL o Data Definition Language que nos ayuda a crear la estructura de una base de datos. Existen 3 grandes comandos:
+
+* Create: Nos ayuda a crear bases de datos, tablas, vistas, índices, etc.
+* Alter: Ayuda a alterar o modificar entidades.
+* Drop: Nos ayuda a borrar. Hay que tener cuidado al utilizarlo.
+  
+
+3 objetos que manipularemos con el lenguaje DDL: Database o bases de datos
+
+Table o tablas. Son la traducción a SQL de las entidades
+View o vistas: Se ofrece la proyección de los datos de la base de datos de forma entendible.
+
+```SQL
+Create Database Prueba;
+Use Prueba;
+
+-- Inserta tu sentencia aqui
+CREATE TABLE IF NOT EXISTS people (
+person_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+last_name VARCHAR(255) NULL,
+first_name VARCHAR(255) NULL,
+address VARCHAR(255) NULL,
+city VARCHAR(255) NULL
+);
+
+SELECT * FROM platziblog.people;
+
+```
+
+### CREATE VIEW y DDL ALTER
+
+```SQL
+
+-- Create view
+
+Create view v_brasil_customers as
+SELECT customer_name,
+contact_name
+FROM Customers WHERE country = 'Brasil';
+
+--EJERCICIO
+
+DELETE FROM people; -- Elimina la información dentro de la tabla.
+ALTER TABLE people AUTO_INCREMENT = 1 ; -- Reinicia el autoincrement a 1
+INSERT INTO people (last_name,first_name,address,city)VALUES('Vázquez', 'Israel','Calle Famosa Num 1','México'),
+('Hernández','Mónica','Reforma 222','México'),
+('Alanis','Edgar','Central 1', 'Monterrey'); -- Insertar datos a la tabla
+
+CREATE OR REPLACE VIEW platzi_people AS -- Crear vista
+SELECT * FROM people;
+
+select * from platzi_people; -- consultar vista
+
+ALTER TABLE people ADD COLUMN date_of_birth DATETIME NULL AFTER city; -- Agregar columna
+DESCRIBE people;
+ALTER TABLE people DROP COLUMN date_of_birth; -- Eliminar columna
+DESCRIBE people;
+
+```
+
+### DDL drop
+
+* Está puede ser la sentencia ¡más peligrosa! (????), sobre todo cuando somos principiantes. Básicamente borra o desaparece de nuestra base de datos algún elemento.
+
+
+```SQL
+-- DROP
+
+DROP TABLE people;
+DROP DATABASE test_db;
+
+```
+
+### Playground: VIEW, ALTER y DROP en SQL
+
+
+```SQL
+-- Escribe aquí tu código SQL 👇
+CREATE VIEW v_madrid_customers AS
+SELECT person_id, last_name, first_name
+FROM people
+WHERE city = "Madrid";
+
+SELECT * FROM v_madrid_customers;
+
+ALTER TABLE people
+ADD COLUMN date_of_birth DATE;
+
+ALTER TABLE people
+DROP COLUMN address;
+
+```
+
+### DML
+
+DML trata del contenido de la base de datos. Son las siglas de Data Manipulation Language y sus comandos son:
+
+* Insert: Inserta o agrega nuevos registros a la tabla.
+* Update: Actualiza o modifica los datos que ya existen.
+* Delete: Esta sentencia es riesgosa porque puede borrar el contenido de una tabla.
+* Select: Trae información de la base de datos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
