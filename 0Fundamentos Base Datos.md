@@ -269,6 +269,23 @@ ADD COLUMN date_of_birth DATE;
 ALTER TABLE people
 DROP COLUMN address;
 
+
+
+--NUEVO EJERCICIO
+
+CREATE TABLE people (
+	person_id INT,
+	last_name VARCHAR(255),
+	first_name VARCHAR(255),
+	address VARCHAR(255),
+	city VARCHAR(255));
+
+INSERT INTO people (last_name,first_name,address, city)
+VALUES('Hernandez','Laura','Calle 21','Monterrey');
+
+SELECT last_name,first_name FROM people;
+
+
 ```
 
 ### DML DATA MANIPULATION LANGUAGE
@@ -279,6 +296,148 @@ DML trata del contenido de la base de datos. Son las siglas de Data Manipulation
 * Update: Actualiza o modifica los datos que ya existen.
 * Delete: Esta sentencia es riesgosa porque puede borrar el contenido de una tabla.
 * Select: Trae información de la base de datos.
+
+
+
+### Creando Platziblog: tablas independientes
+
+* Una buena práctica es comenzar creando las entidades que no tienen una llave foránea.
+* Generalmente en los nombres de bases de datos se evita usar eñes o acentos para evitar problemas en los manejadores de las bases de datos.
+
+```SQL
+-- Creando Platziblog: tablas independientes
+
+
+/*creacion de base de datos PlatziBlog*/
+create database PlatziBlog default character set utf8 ;
+
+/*linia para utilizar PlatziBlog*/
+use PlatziBlog;
+
+/*construccion de tablas independientes*/
+create table categorias
+(
+id int not null auto_increment,
+nom_categoria varchar(30) not null,
+constraint primary key (id)
+);
+
+create table etiquetas
+(
+id int not null auto_increment,
+nom_etiquetas varchar(30) not null,
+constraint primary key (id)
+);
+
+create table usuarios 
+(
+  id int not null auto_increment,
+  login varchar(30) not null,
+  pasword varchar(32) not null,
+  nickname varchar(40) not null,
+  email varchar(40) not null,
+  primary key (id),
+  unique key email_unique (email)
+)
+
+```
+
+
+
+
+### Creando Platziblog: tablas dependientes
+
+* El comando “cascade” sirve para que cada que se haga un update en la tabla principal, se refleje también en la tabla en la que estamos creando la relación.
+  
+```SQL
+CREATE TABLE posts(
+id INT,
+titulo VARCHAR(130) NOT NULL,
+fecha_publicacion TIMESTAMP,
+contenido TEXT NOT NULL,
+estatus CHAR(8) DEFAULT "activo",
+usuario_id INT NOT NULL,
+categoria_id INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
