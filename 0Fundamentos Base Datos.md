@@ -361,6 +361,8 @@ categoria_id INT NOT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+
+
 ```
 
 
