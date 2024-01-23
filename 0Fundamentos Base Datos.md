@@ -364,31 +364,153 @@ FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 
 
 ```
+### Creando Platziblog: tablas transitivas
+
+* Las tablas transitivas sirven como puente para unir dos tablas. No tienen contenido semántico.
+  
+* Reverse Engineer nos reproduce el esquema del cual nos basamos para crear nuestras tablas. Es útil cuando llegas a un nuevo trabajo y quieres entender cuál fue la mentalidad que tuvieron al momento de crear las bases de datos.
+
+# TODO EL CODIGO DE SQL AVANCE DE LAS CLASES
+
+```SQL
+-- CREATE database platziblog;
+use platziblog;
 
 
 
+CREATE TABLE people (
+	person_id INT,
+	last_name VARCHAR(255),
+	first_name VARCHAR(255),
+	address VARCHAR(255),
+	city VARCHAR(255));
+
+INSERT INTO people (last_name,first_name,address, city)
+VALUES('Hernandez','Laura','Calle 21','Monterrey');
+
+SELECT last_name,first_name FROM people;
+
+-- Creando Platziblog: tablas independientes
+
+
+/*creacion de base de datos PlatziBlog*/
+create database PlatziBlog default character set utf8 ;
+
+/*linia para utilizar PlatziBlog*/
+use PlatziBlog;
+
+/*construccion de tablas independientes*/
+create table categorias
+(
+id int not null auto_increment,
+nom_categoria varchar(30) not null,
+constraint primary key (id)
+);
+
+create table etiquetas
+(
+id int not null auto_increment,
+nom_etiquetas varchar(30) not null,
+constraint primary key (id)
+);
+
+create table usuarios 
+(
+  id int not null auto_increment,
+  login varchar(30) not null,
+  pasword varchar(32) not null,
+  nickname varchar(40) not null,
+  email varchar(40) not null,
+  primary key (id),
+  unique key email_unique (email)
+);
+
+
+CREATE TABLE posts(
+id INT,
+titulo VARCHAR(130) NOT NULL,
+fecha_publicacion TIMESTAMP,
+contenido TEXT NOT NULL,
+estatus CHAR(8) DEFAULT "activo",
+usuario_id INT NOT NULL,
+categoria_id INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+
+create table comentarios(
+id int not null auto_increment primary key,
+comentario text not null,
+usuario_id int not null,
+posts_id int not null,
+foreign key (usuario_id) references usuarios(id) on delete cascade on update cascade,
+foreign key (posts_id) references posts(id) on delete cascade on update cascade
+);
+
+
+-- tabla transitiva
+create table posts_etiquetas(
+id int not null auto_increment primary key,
+posts_id int not null,
+etiqueta_id int not null,
+foreign key (posts_id) references posts(id) on delete no action on update no action,
+foreign key (etiqueta_id) references etiquetas(id) on delete no action on update no action
+);
+
+
+```
 
 
 
+## ¿Por qué las consultas son tan importantes?
+
+Las consultas o queries a una base de datos son una parte fundamental ya que esto podría salvar un negocio o empresa.
+Alrededor de las consultas a las bases de datos se han creado varias especialidades como ETL o transformación de datos, business intelligence e incluso machine learning.
+
+## Estructura básica de un Query
+
+Los queries son la forma en la que estructuramos las preguntas que se harán a la base de datos. Transforma preguntas en sintaxis.
+
+El query tiene básicamente 2 partes: SELECT y FROM y puede aparecer una tercera como WHERE.
+
+* La estrellita o asterisco (*) quiere decir que vamos a seleccionar todo sin filtrar campos.
 
 
+![SQL Diagrama](BDImagenes/9Mapa%20conceptual%20de%20conceptos%20y%20comandos%20SQL%20(DML,%20DDL,%20DCL,%20TCL).png)
 
 
+## SELECT
+
+SELECT se encarga de proyectar o mostrar datos.
+
+* El nombre de las columnas o campos que estamos consultando puede ser cambiado utilizando AS después del nombre del campo y poniendo el nuevo que queremos tener:
+SELECT titulo AS encabezado
+FROM posts;
+
+* Existe una función de SELECT para poder contar la cantidad de registros. Esa información (un número) será el resultado del query:
+SELECT COUNT(*)
+FROM posts;
 
 
+## Playground: SELECT en SQL
+```SQL
+SELECT * FROM cursos;
 
+SELECT COUNT (*) AS cantidad
+FROM cursos;
 
+SELECT nombre AS name, profe AS teacher, n_calificaciones AS n_reviews
+FROM cursos;
+```
+## FROM y SQL JOINs
 
+FROM indica de dónde se deben traer los datos y puede ayudar a hacer sentencias y filtros complejos cuando se quieren unir tablas. La sentencia compañera que nos ayuda con este proceso es JOIN.
 
+Los diagramas de Venn son círculos que se tocan en algún punto para ver dónde está la intersección de conjuntos. Ayudan mucho para poder formular la sentencia JOIN de la manera adecuada dependiendo del query que se quiere hacer.
 
-
-
-
-
-
-
-
-
+![SQL JOINS](/BDImagenes/10SQL_JOINS.png)
 
 
 
