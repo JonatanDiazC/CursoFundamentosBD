@@ -513,6 +513,131 @@ Los diagramas de Venn son círculos que se tocan en algún punto para ver dónde
 ![SQL JOINS](/BDImagenes/10SQL_JOINS.png)
 
 
+## Utilizando la sentencia FROM
+
+* Consultas en SQL
+
+```SQL
+SELECT * FROM usuarios
+	LEFT JOIN posts ON usuarios.id = posts.usuario_id
+WHERE posts.usuario_id is null;
+
+SELECT * FROM usuarios
+	RIGHT JOIN posts ON usuarios.id = posts.usuario_id
+ WHERE posts.usuario_id is null;
+
+SELECT * FROM usuarios
+	INNER JOIN posts ON usuarios.id = posts.usuario_id;
+
+SELECT * FROM usuarios
+	LEFT JOIN posts ON usuarios.id = posts.usuario_id
+UNION
+SELECT * FROM usuarios
+	RIGHT JOIN posts ON usuarios.id = posts.usuario_id
+
+```
+
+
+## Playground: FROM y LEFT JOIN en SQL
+
+```SQL
+SELECT 
+	courses.id as id, 
+	courses.name as name, 
+	teacher_id, 
+teachers.name as teacher_name
+FROM courses 
+  LEFT JOIN teachers on teachers.course_id = courses.id
+where teacher_id is not null;
+```
+
+## WHERE
+
+WHERE es la sentencia que nos ayuda a filtrar tuplas o registros dependiendo de las características que elegimos.
+
+* La propiedad LIKE nos ayuda a traer registros de los cuales conocemos sólo una parte de la información.
+  
+* La propiedad BETWEEN nos sirve para arrojar registros que estén en el medio de dos. Por ejemplo los registros con id entre 20 y 30.
+
+```SQL
+SELECT * FROM posts WHERE titulo LIKE '%escandalo%';
+
+SELECT * FROM posts WHERE fecha_publicacion > '2025-01-01';
+
+SELECT * FROM posts WHERE fecha_publicacion BETWEEN '2023-01-01' AND '2025-01-01';
+
+SELECT * FROM posts WHERE month(fecha_publicacion) = '04';
+
+
+```
+
+
+
+## Utilizando la sentencia WHERE nulo y no nulo
+
+El valor nulo en una tabla generalmente es su valor por defecto cuando nadie le asignó algo diferente. La sintaxis para hacer búsquedas de datos nulos es IS NULL. La sintaxis para buscar datos que no son nulos es IS NOT NULL
+
+
+```SQL
+SELECT * FROM posts WHERE usuario_id IS not NULL AND estatus = 'activo' AND id <50
+AND categoria_id = 2 AND year(fecha_publicacion) ='2025';
+
+```
+
+## GROUP BY
+
+GROUP BY tiene que ver con agrupación. Indica a la base de datos qué criterios debe tener en cuenta para agrupar.
+
+Se usa para informes:
+
+```SQL
+SELECT estatus, COUNT(*) posts_quantity
+FROM posts
+GROUP BY estatus;
+
+-- Agrupando por año de post
+SELECT year(fecha_publicacion) post_year, COUNT(*) as posts_quantity
+FROM posts
+GROUP BY post_year;
+
+-- Agrupando por MES
+SELECT monthname(fecha_publicacion) post_month, COUNT(*) as posts_quantity
+FROM posts
+GROUP BY post_month;
+
+-- Agrupado por estatus y mes
+SELECT estatus, monthname(fecha_publicacion) post_month, COUNT(*) as posts_quantity
+FROM posts
+GROUP BY estatus, post_month;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
