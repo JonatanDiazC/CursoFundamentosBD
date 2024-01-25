@@ -605,82 +605,278 @@ SELECT monthname(fecha_publicacion) post_month, COUNT(*) as posts_quantity
 FROM posts
 GROUP BY post_month;
 
+
+-- Agrupación por year - month
+SELECT year(fecha_publicacion) as post_year,monthname(fecha_publicacion) AS post_month, COUNT(*) AS post_quantity
+FROM posts
+GROUP BY post_year, post_month;
+
 -- Agrupado por estatus y mes
 SELECT estatus, monthname(fecha_publicacion) post_month, COUNT(*) as posts_quantity
 FROM posts
 GROUP BY estatus, post_month;
 ```
 
+## ORDER BY y HAVING
 
+La sentencia ORDER BY tiene que ver con el ordenamiento de los datos dependiendo de los criterios que quieras usar.
 
+* ASC sirve para ordenar de forma ascendente.
+* DESC sirve para ordenar de forma descendente.
+* LIMIT se usa para limitar la cantidad de resultados que arroja el query.
+  
+* ***HAVING tiene una similitud muy grande con WHERE, sin embargo el uso de 
+  ellos depende del orden. Cuando se quiere seleccionar tuplas agrupadas únicamente se puede hacer con HAVING.***
 
+```SQL
+-- ORDER BY y HAVING
 
+-- Encadenar consultas con HAVING
+SELECT MONTHNAME(fecha_publicacion) AS mes, estatus, COUNT(*) AS cantidad
+FROM posts
+GROUP BY estatus, mes
+HAVING cantidad > 1 AND mes IN ('December', 'May') ;
 
+-- HAVING
+SELECT MONTHNAME(fecha_publicacion) AS post_month, estatus, COUNT(*) AS post_quantity FROM posts
+GROUP BY estatus, post_month
+HAVING post_quantity >2
+ORDER BY post_month;
 
+-- SUB CONSULTA
+SELECT * FROM (SELECT monthname(fecha_publicacion)AS post_month, estatus, COUNT(*) AS post_quantity 
+FROM posts
+GROUP BY estatus, post_month
+ORDER BY post_month) AS Tabla1
+WHERE Tabla1.post_quantity >2;
+-- mismo resultado 2 formas de hacerlo
+```
 
 
+## Playground: Agrupamiento y Ordenamiento de Datos
 
+```SQL
+SELECT
+  teachers.name AS teacher,
+  SUM(courses.n_reviews) AS total_reviews
+FROM teachers
+INNER JOIN courses
+ON teachers.id = courses.teacher_id
+GROUP BY teacher
+ORDER BY total_reviews DESC;
+```
 
+## El interminable agujero de conejo (Nested queries)
 
+Los Nested queries significan que dentro de un query podemos hacer otro query. Esto sirve para hacer join de tablas, estando una en memoria. También teniendo un query como condicional del otro.
 
+Este proceso puede ser tan profundo como quieras, teniendo infinitos queries anidados.
+Se le conoce como un producto cartesiano ya que se multiplican todos los registros de una tabla con todos los del nuevo query. Esto provoca que el query sea difícil de procesar por lo pesado que puede resultar.
 
 
+```SQL
+-- EN EL FROM
+SELECT new_table_projection.date, COUNT(*) AS post_count
+FROM (
+SELECT DATE(MIN(fecha_publicacion)) AS date, YEAR(fecha_publicacion) AS post_year
+FROM posts
+GROUP BY post_year) AS new_table_projection
+GROUP BY new_table_projection.date
+ORDER BY new_table_projection.date;
 
+-- EN EL WHERE
+SELECT * FROM posts
+WHERE fecha_publicacion = (
+SELECT MAX(fecha_publicacion)
+FROM posts);
+```
 
 
 
+## ¿Cómo convertir una pregunta en un query SQL?
 
+De pregunta a Query
 
+* SELECT: Lo que quieres mostrar
+* FROM: De dónde voy a tomar los datos
+* WHERE: Los filtros de los datos que quieres mostrar
+* GROUP BY: Los rubros por los que me interesa agrupar la información
+* ORDER BY: El orden en que quiero presentar mi información
+* HAVING: Los filtros que quiero que mis datos agrupados tengan
 
 
+## Preguntándole a la base de datos
 
+* GROUP_CONCAT toma el resultado del query y lo pone como campo separado por comas.
 
+```SQL
 
+-- PREGUNTANDOLE A LA BD
+SELECT posts.titulo, COUNT(*) num_etiquetas FROM posts
+	INNER JOIN posts_etiquetas ON posts.id = posts_etiquetas.post_id
+    INNER JOIN etiquetas ON etiquetas.id = posts_etiquetas.etiqueta_id
+    GROUP BY posts.id
+    ORDER BY num_etiquetas DESC;
+
 
+-- -- PREGUNTANDOLE A LA BD
+SELECT * FROM etiquetas e
+	LEFT JOIN posts_etiquetas pe
+    ON e.id = pe.etiqueta_id
+    WHERE pe.etiqueta_id IS NULL;
+```
 
 
+![Apuntes para recordar](BDImagenes/11Apuntes.png)
 
 
+## Consultando PlatziBlog
 
 
+```SQL
+SELECT c.nombre_categoria, COUNT(*) AS cant_posts
+    FROM posts as p
+    LEFT JOIN categorias AS c ON c.id = p.categoria_id
+    GROUP BY p.categoria_id
+    ORDER BY cant_posts DESC;
 
+-- MÁS POSTS por usuario
+SELECT u.nickname, COUNT(*) AS num_posts
+FROM usuarios AS u
+LEFT JOIN posts AS p ON p.usuario_id = u.id
+GROUP BY u.id
+ORDER BY num_posts DESC;
 
+-- POST POR USUARIO CANT Y CATG
+SELECT u.nickname, COUNT(*) AS num_posts, GROUP_CONCAT(nombre_categoria) AS nom_categoria
+FROM usuarios AS u
+LEFT JOIN posts AS p ON p.usuario_id = u.id
+LEFT JOIN categorias AS c ON p.categoria_id = c.id
+GROUP BY u.id
+ORDER BY num_posts DESC;
 
+-- SIN POSTS
+SELECT * FROM usuarios as u
+LEFT JOIN posts AS p ON u.id = p.usuario_id
+WHERE p.usuario_id IS NULL
 
+```
 
 
 
+## Playground: Prueba Final con PlatziBlog
+Para resolver este desafio debes crear una tabla comentarios, agregar al menos 3 comentarios, imprimir todos los comentarios de la tabla y finalmente imprimir los comentarios de un usuario especial con un formato en específico.
 
+Reto 1: crear la tabla
+Crea una tabla comentarios con las columnas id, cuerpo_comentario, usuario_id y post_id.
 
+id	cuerpo_comentario	usuario_id	post_id
+...	...	...	...
+Reto 2: agrega registros
+Inserta al menos 3 comentarios en la tabla. Puedes escribir tantos comentarios como quieras. Asegúrate de que solo en 2 el usuario_id sea 1.
 
+Reto 3: imprime registros
+Imprime todas las columnas de todos los registros de la tabla comentarios.
 
+Reto 4: imprime registros del usuario 1
+Selecciona los 2 comentarios del usuario 1. Haz un JOIN para conseguir la información del post relacionado con la propiedad post_id y el usuario rerlacionado con la propiedad usuario_id. Imprime la propiedad comentarios.cuerpo_comentario como comentario, usuarios.login como usuario y posts.titulo como post.
 
+comentario	usuario	post
+...	israel	...
+...	israel	...
 
+```SQL
+-- Reto 1
+CREATE TABLE IF NOT EXISTS comentarios (
+  id INTEGER PRiMARY KEY NOT NULL,
+  cuerpo_comentario TEXT NOT NULL,
+  usuario_id INTEGER NOT NULL,
+  post_id INTEGER NOT NULL,
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+  FOREIGN KEY (post_id) REFERENCES posts(id)
+);
 
+-- Reto 2
+INSERT INTO comentarios (
+  id, cuerpo_comentario, usuario_id, post_id
+) 
+VALUES
+(1,"Comentario 1", 2, 54),
+(2,"Comentario 2", 1, 43),
+(3,"Comentario 3", 1, 43);
 
+-- Reto 3
+SELECT * FROM comentarios;
 
+-- Reto 4
+SELECT comentarios.cuerpo_comentario AS comentario,
+usuarios.login AS usuario, posts.titulo AS post
+FROM comentarios
+INNER JOIN posts ON 
+posts.id = comentarios.post_id
+INNER JOIN usuarios ON 
+usuarios.id = comentarios.usuario_id
+WHERE comentarios.usuario_id = 1;
+```
 
 
+# ¿Qué son y cuáles son los tipos de bases de datos no relacionales?
 
+Respecto a las bases de datos no relacionales, no existe un solo tipo, aunque se engloben en una sola categoría.
 
+**Tipos de bases de datos no relacionales:**
 
 
+* Clave - valor: Son ideales para almacenar y extraer datos con una clave única. Manejan los diccionarios de manera excepcional. Ejemplos: DynamoDB, Cassandra.
+  
+* Basadas en documentos: Son una implementación de clave valor que varía en la forma semiestructurada en que se trata la información. Ideal para almacenar datos JSON y XML. Ejemplos: MongoDB, Firestore.
+  
+* Basadas en grafos: Basadas en teoría de grafos, sirven para entidades que se encuentran interconectadas por múltiples relaciones. Ideales para almacenar relaciones complejas. Ejemplos: neo4j, TITAN.
+  
+* En memoria: Pueden ser de estructura variada, pero su ventaja radica en la velocidad, ya que al vivir en memoria la extracción de datos es casi inmediata. Ejemplos: Memcached, Redis.
+  
+* Optimizadas para búsquedas: Pueden ser de diversas estructuras, su ventaja radica en que se pueden hacer queries y búsquedas complejas de manera sencilla. Ejemplos: BigQuery, Elasticsearch.
 
+## Servicios administrados y jerarquía de datos
+Firebase es un servicio de Google donde puedes tercerizar muchos elementos en la nube.
+Jerarquía de datos:
 
+* Base de datos
+* Colección
+* Documento
 
 
 
+## Top level collection con Firebase
 
+El modelo de bases de datos no relacionales es un poco más cercano al mundo real en su comportamiento.
 
+* Las top level collections son las colecciones que se tienen de inmediato o entrada en el proyecto.
+  
+* Firebase es un servicio que tiene múltiples opciones y está pensado principalmente para aplicaciones móviles y web.
 
 
+## Creando y borrando documentos en Firestore
 
 
 
+* String, caracteres acepta letras y numeros
 
+* Number, acepta numeros enteros y flotantes
 
+* Boolean, valor booleano
 
+* Map, Es un tipo de valor que permite agregar otros documentos dentro del mismo, algo asi como si fuera un folder y ademas admite dentro de su estructuraa crear otro tipo de maps
 
+* Array, Arreglos son un tipo de datos que no necesariamente se necesita tener un tipo de identificador para cada uno de los datos sino que solamente se van a almacenar distintos valores dentro de este mismo campo, admite distintos campos de valores en excepcion de otro array
+
+* NULL, Significa que el valor del campo va a tener valor nulo 
+
+* TIMESTAMP, Almacena fecha dia mes y año ademas de la hora
+
+* GEOPOINT, Almacena ubicaciones geograficas con latitud y longitud
+
+* Reference, Es el unico campo donde se ve algo basado en relacion en base de datos NoSQL, Esto lo que hace es referenciar de un documento a otro
 
 
 
