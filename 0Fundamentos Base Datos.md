@@ -880,98 +880,159 @@ El modelo de bases de datos no relacionales es un poco más cercano al mundo rea
 
 
 
+## Proyecto final: transformando tu proyecto en una db no relacional
 
 
+Dentro de las bases de datos relacionales tenemos diferentes niveles de datos. En primer lugar tenemos las Bases de Datos o Esquemas como repositorios donde vivirán los datos que nos interesa guardar. Dentro del esquema existen las Tablas que provienen del concepto de entidades; y a su vez dentro de las tablas tenemos las tuplas o renglones.
 
+Cuando trabajamos con bases de datos basadas en documentos como Firestore, aún existe la figura de la base de datos, sin embargo cambiaremos las tablas en favor de las colecciones y las tuplas en lugar de los documentos.
 
 
+Recuerda:
 
+* Tabla -> Colección
 
+* Tupla -> Documento
 
+Dentro de las Colecciones existen 2 grandes tipos. Las Top level collection o colecciones de nivel superior y las subcollections o subcolecciones. Estas últimas viven únicamente dentro de un documento padre.
 
+¿Cómo saber cuál escoger?
 
+Para determinar si tu colección debe ser top level o subcolección no hay una regla escrita en piedra y más bien tiene que ver con el caso de uso en particular y con la experiencia que hayas ganado como desarrollador.
 
+Lo cierto es que no hay una sola forma de estructurar nuestra DB basada en documentos, y por tanto no existe una respuesta correcta, sin embargo a continuación te ofrezco un par de reglas guía que puedes utilizar para transformar tu proyecto que ya trabajaste en bases de datos relacionales en un proyecto no relacional.
 
+Regla 1. Piensa en la vista de tu aplicación
 
+La primera pista que te puedo dar es que pienses en un inicio en la manera en que los datos serán extraídos. En el caso de una aplicación, la mejor forma de pensarlo es en términos de las vistas que vas a mostrar a un momento determinado en la aplicación.
 
+Es decir, al armar la estructura en la base de datos que sea un espejo o que al menos contenga todos los datos necesarios para llenar las necesidades que tiene nuestra parte visual en la aplicación.
 
+En el caso de Platziblog por ejemplo si tienes una vista de un blog post individual, generalmente conviene mostrar además de los datos inherentes al post como el contenido, datos adicionales como las etiquetas que tiene o por ejemplo el autor (o autores si es colaborativo), en este caso tal vez convenga guardar estas dos “entidades” (autores y etiquetas) como subcolecciones de cada documento blog post.
 
+Regla 2. La colección tiene vida propia
 
+Esta regla se refiere a que la excepción a la regla 1 es cuando tenemos un caso en que la “entidad” que tiene necesidad de vivir y modificarse constantemente de manera independiente a las otras colecciones. Por ejemplo en Platziblog podemos en el ejemplo anterior hacer una excepción a autores porque nos conviene tenerlas como top level collection en el sentido que se añadan, borren, cambien o listen los usuarios sin depender del blog post.
 
+Experimenta aplicando estas dos reglas a un proyecto que ya conozcas en una base de datos relacional y trata de convertirla en un proyecto de Firestore y comentanos los retos a los que te enfrentaste.
 
 
+## Bases de datos en la vida real
 
+La masificación de las aplicaciones y por ende de la información trajo consigo problemas para los que las bases de datos relacionales (SQL) no daban abasto. Para solucionarlos era necesario modificarlas según el problema que queramos resolver. Ejemplo:
 
+Almacenar y generar consultas a datos históricos → Big query
+Guardar y recuperar datos vivos (poca flexibilidad para hacer querys) → Bases de datos basados en documentos
 
+## Big Data
 
+* Big Data es un concepto que nace de la necesidad de manejar grandes cantidades de datos. La tendencia comenzó con compañías como YouTube al tener la necesidad de guardar y consultar mucha información de manera rápida.
+Es un gran movimiento que consiste en el uso de diferentes tipos de bases de datos.
 
+**Características clave de Big Data:**
 
+Volumen:
 
+Se refiere a la cantidad de datos. Big Data implica conjuntos de datos que son enormes y que pueden estar en el rango de terabytes, petabytes o incluso exabytes.
+Velocidad:
 
+Se refiere a la velocidad a la que se generan, recopilan y procesan los datos. En muchos casos, los datos de Big Data se generan en tiempo real y deben ser procesados rápidamente para obtener información valiosa.
+Variedad:
 
+Incluye diferentes tipos de datos, tanto estructurados como no estructurados. Esto puede incluir datos numéricos, textuales, imágenes, videos, registros de redes sociales, datos de sensores, etc.
+Veracidad:
 
+Se refiere a la calidad de los datos. La veracidad es crucial porque los datos de baja calidad pueden conducir a análisis incorrectos y decisiones erróneas.
+Valor:
 
+El objetivo final de Big Data es extraer información valiosa y conocimiento significativo para tomar decisiones informadas y estratégicas.
 
 
+## Data warehouse
 
+* Data Warehouse trata de guardar cantidades masivas de datos para la posteridad. Allí se guarda todo lo que no está viviendo en la aplicación pero es necesario tenerlo.
+Debe servir para guardar datos por un largo periodo de tiempo y estos datos se deben poder usar para poder encontrar cuestiones interesantes para el negocio.
 
+## Data mining
+El Data Mining se dedica a minar datos, a extraerlos de donde sea que estén (archivos muertos, base de datos actual, etc…) y hacer sentido de ellos para darles un uso.
 
 
+* Data Mining (minería de datos)
+Es un proceso de descubrimiento y extracción de patrones ocultos y conocimiento valioso a partir de grandes conjuntos de datos. Utiliza técnicas y algoritmos avanzados para explorar datos, identificar relaciones y tendencias, y obtener información útil que puede ser utilizada para tomar decisiones empresariales, pronosticar resultados y resolver problemas complejos. Aquí hay una explicación más detallada sobre la Minería de Datos:
+Extracción de conocimiento:
 
+* El Data Mining tiene como objetivo principal la extracción de conocimiento y patrones ocultos de los datos. Los datos brutos pueden contener información valiosa, pero a menudo está enterrada en volúmenes masivos de información. El Data Mining ayuda a revelar esa información oculta.
+Proceso iterativo:
 
+* El Data Mining es un proceso iterativo que implica múltiples etapas, desde la selección y preparación de datos hasta el modelado, evaluación y despliegue de resultados. Cada etapa puede implicar la aplicación de diferentes técnicas y algoritmos.
+Fuentes de datos:
 
+* Los datos utilizados en el Data Mining pueden provenir de diversas fuentes, como bases de datos empresariales, registros de transacciones, datos de sensores, redes sociales, registros médicos, y más. Cuantas más fuentes de datos se utilicen, mayor será la riqueza de la información que se puede extraer.
+Preprocesamiento de datos:
 
+* Antes de aplicar técnicas de Data Mining, los datos suelen pasar por una fase de preprocesamiento. Esto implica limpiar los datos (eliminar valores atípicos y datos incorrectos), transformarlos (normalizar, codificar, etc.) y seleccionar las características más relevantes.
 
 
+## ETL
 
+ETL son las siglas de Extract, Transform, Load (extraer, transformar y cargar). Se trata de tomar datos de archivos muertos y convertirlos en algo que sea de utilidad para el negocio.
+También ayuda a tomar los datos vivos de la aplicación, transformarlos y guardarlos en un data warehouse periódicamente.
 
+# Business intelligence
 
+LAS TECNICAS DE BUSINESS INTELLIGENCE PERMITEN , presentar al cliente informacion util como:
 
+* Tendencia
+* Comportamiento repetitivo
+* Demografia de usuarios
+* Analisis de situacion por geografia
+* Patrones claros
+Mas alla de las habilidades tecnicas, el conocimiento del mercado y de los usuarios hacen posible presentar sugerencias adecuadas para que se puedan tomar las decisiones correctas en el momento preciso.
 
+* **Business intelligence:** Tener todos los datos (actuales e históricos) de manera clara y oportuna, para que sean útiles para el momento de tomar decisiones de negocios basados en esos datos.
 
+## Machine Learning
+Machine Learning tiene significados que varían. Es una serie de técnicas que involucran la inteligencia artificial y la detección de patrones.
+Machine learning para datos tiene un gran campo de acción y es un paso más allá del business intelligence.
+Nos ayuda a hacer modelos que encuentran patrones fortuitos encontrando correlaciones inesperadas.
 
+Tiene dos casos de uso particulares:
 
+* Clasificación
+* Predicción
 
+## Data Science
+Data Science es aplicar todas las técnicas de procesamiento de datos. En su manera más pura tiene que ver con gente con un background de estadísticas y ciencias duras.
 
+**Data Science**: Es aplicar todo lo que hemos visto, tecnicas de ETL, Data Mining, Business Intelligence. Aunque esta mas dirigida a personas con background de estadisticas, hoy en dia tambien participan personas con el perfil de Data Engineering. Al hacer Data Science estamos aplicando todo lo visto en los temas anteriores, no solo a nivel tecnico sino que desarrollamos la experiencia y conocimientos sobre las distintas tecnologias, en que parte del desarrollo de nuestro proyecto tenemos que utilizarlas, etc. Con lo cual el Data Science juega el papel de manager dentro de un equipo de profesionales de datos.
 
 
+## ¿Por qué aprender bases de datos hoy?
+¡Has concluido el curso! Ahora tienes potentes herramientas y posibilidades para ingresar en este apasionante campo.
 
+Llevaste diagramas a bases de datos, exploraste un poco el mundo de las bases de datos no relacionales, hicimos un proyecto en firestore y transformamos Platzi blog de una base de datos relacional en una base de datos de documentos.
 
+Dentro de las posibilidades que tienes hoy en día puedes hacer: Machine learning, ETL, Data Warehouse, Data mining, entre otros.
 
+Recuerda practicar mucho con el proyecto. Te invito a que tomes el examen y verifiques tus conocimientos. ¡Exitos!
 
 
+## Bases de datos relacionales vs no relacionales
 
+## Elegir una base de datos
 
+Has aprendido todo lo necesario para comenzar a trabajar con bases de datos relacionales y no-relacionales. Ahora es probable que al momento de iniciar con un proyecto te enfrentes a la pregunta ¿qué tipo de base de datos debo elegir?.
 
+El teorema CAP te ayuda a tomar en cuenta 3 factores clave:
 
+* Consistencia.
+* Disponibilidad.
+* Tolerancia a la partición.
+En este blogpost podrás conocer más detalles para tomar la mejor decisión.
 
 
+**Qué es el teorema CAP y cómo elegir la base de datos para tu proyecto**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[CAP](https://platzi.com/blog/que-es-el-teorema-cap-y-como-elegir-la-base-de-datos-para-tu-proyecto/ "Cómo elegir la BD para un proyecto")
 
 
