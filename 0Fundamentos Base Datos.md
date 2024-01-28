@@ -637,13 +637,13 @@ FROM posts
 GROUP BY estatus, mes
 HAVING cantidad > 1 AND mes IN ('December', 'May') ;
 
--- HAVING
+-- HAVING -- PARA FILTRAR DATOS DE UNA COLUMNA CALCULADA
 SELECT MONTHNAME(fecha_publicacion) AS post_month, estatus, COUNT(*) AS post_quantity FROM posts
 GROUP BY estatus, post_month
 HAVING post_quantity >2
 ORDER BY post_month;
 
--- SUB CONSULTA
+-- SUB CONSULTA -- PARA FILTRAR DATOS DE UNA COLUMNA CALCULADA
 SELECT * FROM (SELECT monthname(fecha_publicacion)AS post_month, estatus, COUNT(*) AS post_quantity 
 FROM posts
 GROUP BY estatus, post_month
